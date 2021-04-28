@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  backend: 
+    build: ./API_SO
+    command: npm run start:dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/app/API_SO
+    depends_on: 
+      - mysql
+    environment: 
+      - MYSQL_DB=project
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=bcd127
+      - MYSQL_HOST=172.19.0.2
+      - MYSQL_PORT=3306
+      - MYSQL_ROOT_PASSWORD=bcd127
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_PORT=3306
+      - MYSQL_DB=project
+      - MYSQL_ROOT_PASSWORD=bcd127
+      - MYSQL_PASSWORD=bcd127
+  frontend:
+    image: front-so
+    build: .
+    ports: 
+      - 8081:80
+    depends_on:
+      - backend
+      - mysql
